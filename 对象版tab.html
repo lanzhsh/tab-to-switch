@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="css/tab.css">
+    </head>
+    <body>
+        <div class="wrapper" id="wrapper">
+            <ul class="tab" id="tab-menu">
+                <li class="tab-item active">国际大牌<span>◆</span></li>
+                <li class="tab-item">国妆名牌<span>◆</span></li>
+                <li class="tab-item">清洁用品<span>◆</span></li>
+                <li class="tab-item">男士精品</li>
+            </ul>
+            <div class="products" id="tab-main">
+                <div class="main selected">
+                    <a href="###"><img src="imgs/guojidapai.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/guozhuangmingpin.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/qingjieyongpin.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/nanshijingpin.jpg" alt=""/></a>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+    	function Tab(lisSelector, boxsSelector) {
+    		// 这里的属性最终会添加实例身上
+    		this.lis = document.querySelectorAll(lisSelector);
+    		this.boxs = document.querySelectorAll(boxsSelector);
+    	}
+    	
+    	// 原型上的方法是供实例调用的，所以通常情况下，里面的this执行实例
+    	Tab.prototype = {
+    		
+    		on: function() {
+    			
+    			// 因为事件回调中的this指向对应的元素，
+    			// 所以这里把外面的this缓存一下，以便在事件回调中使用
+    			var _this = this;
+    			
+    			for(var i = 0, len = this.lis.length; i < len; i++) {
+    				this.lis[i].index = i;
+    				
+    				// 事件回调是由浏览器调用的，这里的this为对应的元素。
+    				this.lis[i].onclick = function() {
+    					// 这里的this指向对应的li元素，把它的下标传递给其他方法
+    					_this.changeTabStyle(this.index);
+    					_this.changeBoxStyle(this.index);
+    				};
+    			}
+    		},
+    		
+    		// 这个方法由实例调用的，所以this指向实例
+    		changeTabStyle: function(index) {
+    			// 先遍历所有li，去掉active，然后再给下标为index的li单独添加active
+ 				for(var i = 0, len = this.lis.length; i < len; i++) {
+ 					this.lis[i].className = "tab-item";
+ 				}
+ 				this.lis[index].className = "tab-item active";
+    		},
+    		
+    		// 这个方法由实例调用的，所以this指向实例
+    		changeBoxStyle: function(index) {
+    			// 先遍历所有box，去掉selected，然后再给下标为index的box单独添加selected
+ 				for(var i = 0, len = this.boxs.length; i < len; i++) {
+ 					this.boxs[i].className = "main";
+ 				}
+ 				this.boxs[index].className = "main selected";
+    		}
+    	};
+    	
+    	// on方法是由new出来的实例调用用，所以on中的this指向实例
+    	new Tab('.tab-item', '.main').on();
+    </script>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="css/tab.css">
+    	<script src="js/jquery-1.12.0.js"></script>
+    </head>
+    <body>
+        <div class="wrapper" id="wrapper">
+            <ul class="tab" id="tab-menu">
+                <li class="tab-item active">国际大牌<span>◆</span></li>
+                <li class="tab-item">国妆名牌<span>◆</span></li>
+                <li class="tab-item">清洁用品<span>◆</span></li>
+                <li class="tab-item">男士精品</li>
+            </ul>
+            <div class="products" id="tab-main">
+                <div class="main selected">
+                    <a href="###"><img src="imgs/guojidapai.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/guozhuangmingpin.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/qingjieyongpin.jpg" alt=""/></a>
+                </div>
+                <div class="main">
+                    <a href="###"><img src="imgs/nanshijingpin.jpg" alt=""/></a>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+    	function Tab(lisSelector, boxsSelector) {
+    		// 这里的属性最终会添加实例身上
+    		this.$lis = $(lisSelector);
+    		this.$boxs = $(boxsSelector);
+    	}
+    	
+    	// 原型上的方法是供实例调用的，所以通常情况下，里面的this执行实例
+    	Tab.prototype = {
+    		
+    		on: function() {
+    			
+    			// 因为事件回调中的this指向对应的元素，
+    			// 所以这里把外面的this缓存一下，以便在事件回调中使用
+    			var _this = this;
+    			
+    			// jquery中的事件回调，里面的this指向对应的元素
+    			this.$lis.click(function(){
+    				// 这里对this进行包装，包装后可以调用jquery方法
+    				_this.changeTabStyle($(this).index());
+					_this.changeBoxStyle($(this).index());
+    			});
+    		},
+    		
+    		// 这个方法由实例调用的，所以this指向实例
+    		changeTabStyle: function(index) {
+    			// 先把每一个li的class重置，然后单独获取指定li额外添加active
+    			this.$lis.attr('class', "tab-item").eq(index).addClass('active');
+    		},
+    		
+    		// 这个方法由实例调用的，所以this指向实例
+    		changeBoxStyle: function(index) {
+    			// 先把每一个box的class重置，然后单独获取指定box额外添加selected
+    			this.$boxs.attr('class', "main").eq(index).addClass('selected');
+    		}
+    	};
+    	
+    	// on方法是由new出来的实例调用用，所以on中的this指向实例
+    	new Tab('.tab-item', '.main').on();
+    </script>
+</html>
